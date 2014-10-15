@@ -1,0 +1,62 @@
+#iFrame {
+  height: 150px;
+  width: 500px;
+  border: 2px solid #D8D8D8;
+	border-radius: 25px;
+	position: absolute;
+}
+
+#logo {
+	height: 50px;
+	width: 50px;
+	border: 2px solid #D8D8D8;
+	border-radius: 50px;
+	margin: 11px 0px 0px 10px;
+	position: absolute;
+}
+
+#product {
+	font-family: Helvetica;
+	font-size: 12px;
+	margin: 15px 0px 0px 75px;
+	position: absolute;
+}
+
+#button {
+  height: 35px;
+  width: 100px;
+  border: 2px solid #D8D8D8;
+  border-radius: 5px;
+  margin: 18px 0px 0px 370px;
+  position: absolute;
+}
+
+#horizontal-line {
+	height: 0px;
+	width: 500px;
+	border: 1px dashed #D8D8D8;
+	margin-top: 75px;
+	position: absolute;
+}
+
+#client {
+  font-family: Helvetica;
+  font-size: 12px;
+  margin: 100px 0px 0px 40px;
+  position: absolute;
+}
+
+#vertical-line {
+	height: 75px;
+	width: 0px;
+	border: 1px dashed #D8D8D8;
+	margin: 75px 0px 0px 250px;
+	position: absolute;
+}
+
+#merchant {
+  font-family: Helvetica;
+  font-size: 12px;
+  margin: 100px 0px 0px 285px;
+  position: absolute;
+}
