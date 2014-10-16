@@ -19,3 +19,18 @@ window.onmessage = function(e) {
             break;
     }
 };
+$(document).ready(function(){
+	var userKey = "username";
+	var username = localStorage.getItem(userKey);
+	if (!username) {
+		$("#button").removeClass("btn-primary");
+		$("#button").addClass("btn-warning");
+		
+		$("#button").click(function() {
+			localStorage.setItem(userKey, "Bob Saget");
+		});
+	} else {
+		$("#button").removeClass("btn-primary");
+		$("#button").addClass("btn-success");
+	}
+});
