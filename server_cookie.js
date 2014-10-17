@@ -1,9 +1,16 @@
-var acceptedDomain = "http://thefifthfreedom.github.io";
+var acceptedDomains = [ "http://thefifthfreedom.github.io", "http://www.columbia.edu" ];
+
 window.onmessage = function(e) {
 		console.log("origin: " + e.origin);
-    if (e.origin !== acceptedDomain) {
-        return;
-    }
+		var isDomainAccepted = false;
+		for(var count = 0; count < acceptedDomains.length; count++) {
+			if (e.origin == acceptedDomains[count]) {
+				isDomainAccepted = true;
+			}
+		}
+		if(!isDomainAccepted)
+			return;
+    
     var payload = JSON.parse(e.data);
     switch(payload.method) {
         case 'set':
