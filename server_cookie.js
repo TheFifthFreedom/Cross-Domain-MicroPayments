@@ -1,9 +1,9 @@
-
-//document.domain = "domain.com";
+var acceptedDomain = "http://thefifthfreedom.github.io";
 window.onmessage = function(e) {
-    //if (e.origin !== "http://domain.com") {
-    //    return;
-    //}
+		console.log("origin: " + e.origin);
+    if (e.origin !== acceptedDomain) {
+        return;
+    }
     var payload = JSON.parse(e.data);
     switch(payload.method) {
         case 'set':
