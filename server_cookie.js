@@ -1,5 +1,25 @@
 var acceptedDomains = [ "http://thefifthfreedom.github.io", "http://www.columbia.edu" ];
 
+$(document).ready(function(){
+
+	safariRedirectHandler();
+	
+	var userKey = "username";
+	var username = localStorage.getItem(userKey);
+	if (!username) {
+		$("#button").removeClass("btn-primary");
+		$("#button").addClass("btn-warning");
+		
+		$("#button").click(function() {
+			//localStorage.setItem(userKey, "Bob Saget");
+			safariButtonHandler();
+		});
+	} else {
+		$("#button").removeClass("btn-primary");
+		$("#button").addClass("btn-success");
+	}
+	
+});
 window.onmessage = function(e) {
 		console.log("origin: " + e.origin);
 		var isDomainAccepted = false;
@@ -26,18 +46,31 @@ window.onmessage = function(e) {
             break;
     }
 };
-$(document).ready(function(){
-	var userKey = "username";
-	var username = localStorage.getItem(userKey);
-	if (!username) {
-		$("#button").removeClass("btn-primary");
-		$("#button").addClass("btn-warning");
-		
-		$("#button").click(function() {
-			localStorage.setItem(userKey, "Bob Saget");
-		});
-	} else {
-		$("#button").removeClass("btn-primary");
-		$("#button").addClass("btn-success");
+function safariButtonHandler() {
+  var userKey = "username";
+	//Took out ""&& (navigator.userAgent.indexOf('Chrome')==-1)""
+	if(isThisSafari()){
+		//var username = localStorage.getItem(userKey);
+		if(top.location != document.location){
+			//if(username == null){
+				href=document.location.href;
+				href=(href.indexOf('?')==-1)?href+'?':href+'&';
+				top.location.href =href+'reref='+encodeURIComponent(document.referrer);
+			//}
+		}
 	}
-});
+}
+function safariRedirectHandler() {
+	if(isThisSafari() && top.location == document.location){
+		localStorage.setItem(userKey, "Bob Saget");
+		rerefidx = document.location.href.indexOf('reref=');
+		if(rerefidx != -1) {
+			href=decodeURIComponent(document.location.href.substr(rerefidx+6));
+			window.location.replace(href);
+		}
+	}
+}
+
+function isThisSafari() {
+	return (navigator.userAgent.indexOf('Safari') != -1);
+}
