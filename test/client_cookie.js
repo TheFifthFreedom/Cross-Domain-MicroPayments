@@ -24,6 +24,9 @@ var iframe = document.getElementById('iframe_payment');
 window.addEventListener('message', receiveMessage, false);
 
 function receiveMessage(evt) {
+	console.log("Client: Receiving message...");
+	console.log("Domain: " + evt.origin + ", Data: " + evt.data);
+	
   //listen to the domain1 messages only
   if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data !== 'not-loggedin') {
     //boom my domain1 cookie info is here
