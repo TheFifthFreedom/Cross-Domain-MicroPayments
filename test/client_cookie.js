@@ -8,9 +8,9 @@ window.onload = function() {
 			 vendor: "Apple"
     };
     // save obj in subdomain localStorage
-    win.postMessage(JSON.stringify({key: 'product', method: "set", data: obj}), "*");
+    //win.postMessage(JSON.stringify({key: 'product', method: "set", data: obj}), "*");
     // load previously saved data
-    win.postMessage(JSON.stringify({key: 'product', method: "get"}), "*");
+    //win.postMessage(JSON.stringify({key: 'product', method: "get"}), "*");
     window.onmessage = function(e) {
         if (e.origin != acceptedDomain) {
             return;
