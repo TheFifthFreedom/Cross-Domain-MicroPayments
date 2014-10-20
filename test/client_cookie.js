@@ -23,6 +23,9 @@ var iframe = document.getElementById('iframe_payment');
 
 window.addEventListener('message', receiveMessage, false);
 
+//testing...
+iframe.contentWindow.postMessage("log-me-in", '*');
+
 function receiveMessage(evt) {
 	console.log("Client: Receiving message...");
 	console.log("Domain: " + evt.origin + ", Data: " + evt.data);
