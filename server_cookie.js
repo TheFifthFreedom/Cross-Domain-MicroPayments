@@ -61,6 +61,7 @@ function safariButtonHandler() {
 	}
 }
 function safariRedirectHandler() {
+	var userKey = "username";
 	if(isThisSafari() && top.location == document.location){
 		localStorage.setItem(userKey, "Bob Saget");
 		rerefidx = document.location.href.indexOf('reref=');
