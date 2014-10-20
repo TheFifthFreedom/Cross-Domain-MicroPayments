@@ -4,20 +4,12 @@ $(document).ready(function(){
 
 	safariRedirectHandler();
 	
-	//var userKey = "username";
-	//var username = localStorage.getItem(userKey);
-	//if (!username) {
-		$("#button").removeClass("btn-primary");
-		$("#button").addClass("btn-warning");
-		
-		$("#button").click(function() {
-			//localStorage.setItem(userKey, "Bob Saget");
-			safariButtonHandler();
-		});
-	//} else {
-	//	$("#button").removeClass("btn-primary");
-	//	$("#button").addClass("btn-success");
-	//}
+
+	$("#button").removeClass("btn-primary");
+	$("#button").addClass("btn-warning");
+	$("#button").click(function() {
+		safariButtonHandler();
+	});
 	
 });
 window.onmessage = function(e) {
@@ -34,7 +26,12 @@ window.onmessage = function(e) {
     var payload = JSON.parse(e.data);
     switch(payload.method) {
         case 'set':
-            localStorage.setItem(payload.key, JSON.stringify(payload.data));
+            //localStorage.setItem(payload.key, JSON.stringify(payload.data));
+						if (payload.key == "username") {
+							console.log("Username is: " + JSON.stringify(payload.data));
+							$("#button").removeClass("btn-primary");
+							$("#button").addClass("btn-success");
+						}
             break;
         case 'get':
             var parent = window.parent;

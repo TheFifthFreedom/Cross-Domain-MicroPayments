@@ -7,6 +7,16 @@ window.onload = function() {
 			 description: "5k man!",
 			 vendor: "Apple"
     };
+		
+		var userKey = "username";
+		var username = localStorage.getItem(userKey);
+		if(username) {
+			obj = {
+       name: username,
+			};
+			win.postMessage(JSON.stringify({key: 'username', method: "set", data: obj}), "*");
+		}
+		
     // save obj in subdomain localStorage
     //win.postMessage(JSON.stringify({key: 'product', method: "set", data: obj}), "*");
     // load previously saved data
