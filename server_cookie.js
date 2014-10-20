@@ -1,4 +1,4 @@
-var acceptedDomains = [ "http://thefifthfreedom.github.io", "http://www.columbia.edu" ];
+/* var acceptedDomains = [ "http://thefifthfreedom.github.io", "http://www.columbia.edu" ];
 
 $(document).ready(function(){
 
@@ -71,4 +71,53 @@ function safariRedirectHandler() {
 
 function isThisSafari() {
 	return (navigator.userAgent.indexOf('Safari') != -1);
+}
+*/
+
+//basic js cookie reader
+function getCookie(name) {
+    var i,x,y,ARRcookies = document.cookie.split(";")
+    for(i=0;i<ARRcookies.length;i++) {
+        x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="))
+        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1)
+        x = x.replace(/^\s+|\s+$/g,"")
+        if (x==name) {
+            return unescape(y)
+        }
+    }
+    return null
+}
+
+//basic js cookie setter
+function setCookie(name, value, exdays) {
+    var exdate = new Date()
+    exdate.setDate(exdate.getDate()+exdays)
+    value=escape(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
+    document.cookie=name+'='+value+'; path=/;'
+}
+
+//we read the page cookies with javascript (best to avoid tight server caching)
+
+if(getCookie('logged-in')) {
+  //cookie present do your thing
+  mycookie = getCookie('logged-in');
+}
+
+if(!getCookie('logged-in')) {
+  //cookie NOT present do your thing
+  mycookie = 'not-loggedin';
+}
+
+//post cookie info to the parent window on any domain
+window.parent.postMessage('message', '*');
+
+//receive messages from the outside domain
+window.addEventListener('message', receiveMessage, false);
+
+function receiveMessage(evt)
+{
+    var msg = evt.data;
+    if(msg === 'log-me-in') {
+      setCookie('logged-in','true',7);
+    }
 }

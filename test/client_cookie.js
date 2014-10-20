@@ -1,5 +1,5 @@
 //var acceptedDomain = "http://googledrive.com";
-window.onload = function() {
+/* window.onload = function() {
     var win = document.getElementsByTagName('iframe')[0].contentWindow;
     var obj = {
        name: "Apple iMac 5k",
@@ -7,16 +7,6 @@ window.onload = function() {
 			 description: "5k man!",
 			 vendor: "Apple"
     };
-		
-		var userKey = "username";
-		var username = localStorage.getItem(userKey);
-		if(username) {
-			obj = {
-       name: username,
-			};
-			win.postMessage(JSON.stringify({key: 'username', method: "set", data: obj}), "*");
-		}
-		
     // save obj in subdomain localStorage
     //win.postMessage(JSON.stringify({key: 'product', method: "set", data: obj}), "*");
     // load previously saved data
@@ -27,4 +17,22 @@ window.onload = function() {
         //}
         console.log(JSON.parse(e.data).name);
     };
-};
+}; */
+
+var iframe = document.getElementById('iframe_payment');
+
+window.addEventListener('message', receiveMessage, false);
+
+function receiveMessage(evt) {
+  //listen to the domain1 messages only
+  if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data !== 'not-loggedin') {
+    //boom my domain1 cookie info is here
+    var mycookie = evt.data;
+		
+  }
+
+ if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data === 'not-loggedin') {
+    //im not logged in so do it now send a message to the iframe
+    iframe.contentWindow.postMessage("log-me-in", '*')
+  }
+}
