@@ -109,7 +109,7 @@ if(!getCookie('logged-in')) {
 }
 
 //post cookie info to the parent window on any domain
-window.parent.postMessage('message', '*');
+window.parent.postMessage(mycookie, '*');
 
 //receive messages from the outside domain
 window.addEventListener('message', receiveMessage, false);

@@ -36,6 +36,6 @@ function receiveMessage(evt) {
 
  if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data === 'not-loggedin') {
     //im not logged in so do it now send a message to the iframe
-    iframe.contentWindow.postMessage("log-me-in", '*')
+    iframe.contentWindow.postMessage("log-me-in", '*');
   }
 }
