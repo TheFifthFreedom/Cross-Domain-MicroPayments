@@ -4,9 +4,9 @@ $(document).ready(function(){
 
 	safariRedirectHandler();
 	
-	var userKey = "username";
-	var username = localStorage.getItem(userKey);
-	if (!username) {
+	//var userKey = "username";
+	//var username = localStorage.getItem(userKey);
+	//if (!username) {
 		$("#button").removeClass("btn-primary");
 		$("#button").addClass("btn-warning");
 		
@@ -14,10 +14,10 @@ $(document).ready(function(){
 			//localStorage.setItem(userKey, "Bob Saget");
 			safariButtonHandler();
 		});
-	} else {
-		$("#button").removeClass("btn-primary");
-		$("#button").addClass("btn-success");
-	}
+	//} else {
+	//	$("#button").removeClass("btn-primary");
+	//	$("#button").addClass("btn-success");
+	//}
 	
 });
 window.onmessage = function(e) {
