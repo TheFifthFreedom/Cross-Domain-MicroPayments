@@ -23,8 +23,6 @@ var iframe = document.getElementById('iframe_payment');
 
 window.addEventListener('message', receiveMessage, false);
 
-//testing...
-iframe.contentWindow.postMessage("log-me-in", '*');
 
 function receiveMessage(evt) {
 	console.log("Client: Receiving message...");
@@ -37,7 +35,12 @@ function receiveMessage(evt) {
 		
   }
 
- if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data === 'not-loggedin') {
+  if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data === 'not-loggedin') {
+    //im not logged in so do it now send a message to the iframe
+    iframe.contentWindow.postMessage("log-me-in", '*');
+  }
+	
+	if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data === 'message') {
     //im not logged in so do it now send a message to the iframe
     iframe.contentWindow.postMessage("log-me-in", '*');
   }
