@@ -68,7 +68,8 @@ sendMessageToClient(MESSAGE_KEY_READY_TO_RECEIVE);
 
 //basic js cookie reader
 function getCookie(name) {
-    var i,x,y,ARRcookies = document.cookie.split(";")
+    /*
+		var i,x,y,ARRcookies = document.cookie.split(";")
     for(i=0;i<ARRcookies.length;i++) {
         x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="))
         y = ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1)
@@ -78,14 +79,21 @@ function getCookie(name) {
         }
     }
     return null
+		*/
+
+		localStorage.getItem(name);
 }
 
 //basic js cookie setter
 function setCookie(name, value, exdays) {
+		/*
     var exdate = new Date()
     exdate.setDate(exdate.getDate()+exdays)
     value=escape(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
     document.cookie=name+'='+value+'; path=/;'
+		*/
+
+		localStorage.setItem(name, value);
 }
 
 /**************************
