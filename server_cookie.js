@@ -23,6 +23,7 @@ $(document).ready(function(){
 	if(getCookie(COOKIE_KEY_USER_ID) !== null) {
 		$("#button").removeClass("btn-primary");
 		$("#button").addClass("btn-success");
+		alert("Sons of bitches INITIAL");
 	} else {
 		$("#button").removeClass("btn-primary");
 		$("#button").addClass("btn-warning");
