@@ -19,7 +19,7 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 	Grab user id cookie. If there is none, display warning button.
 	Otherwise, display the success button.
 */
-$(document).ready(){function(){
+$(document).ready(function(){
 	if(getCookie(COOKIE_KEY_USER_ID) !== null) {
 		$("#button").removeClass("btn-primary");
 		$("#button").addClass("btn-success");
@@ -36,7 +36,7 @@ $(document).ready(){function(){
 			}
 		});
 	}
-}}
+});
 
 /*
 	Add listener for client messages.
