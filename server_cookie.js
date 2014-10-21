@@ -19,25 +19,20 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 	Grab user id cookie. If there is none, display warning button.
 	Otherwise, display the success button.
 */
-$(document).ready(function(){
-	if(getCookie(COOKIE_KEY_USER_ID) !== null) {
-		$("#button").removeClass("btn-primary");
-		$("#button").addClass("btn-success");
-		alert("Sons of bitches INITIAL");
-	} else {
-		$("#button").removeClass("btn-primary");
-		$("#button").addClass("btn-warning");
-		$("#button").click(function() {
-			setCookie(COOKIE_KEY_USER_ID, "Strong Cheese", 9999);
-			if(getCookie(COOKIE_KEY_USER_ID) !== null) {
-				console.log("Clicked! And now changing button color.");
-				//$("#button").removeClass("btn-primary");
-				//$("#button").addClass("btn-success");
-				alert("Sons of bitches");
-			}
-		});
-	}
-});
+if(getCookie(COOKIE_KEY_USER_ID) !== null) {
+	$("#button").removeClass("btn-primary");
+	$("#button").addClass("btn-success");
+} else {
+	$("#button").removeClass("btn-primary");
+	$("#button").addClass("btn-warning");
+	$("#button").click(function() {
+		setCookie(COOKIE_KEY_USER_ID, "StrongCheese", 9999);
+		if(getCookie(COOKIE_KEY_USER_ID) !== null) {
+			$("#button").removeClass("btn-primary");
+			$("#button").addClass("btn-success");
+		}
+	});
+}
 
 /*
 	Add listener for client messages.
@@ -73,7 +68,6 @@ sendMessageToClient(MESSAGE_KEY_READY_TO_RECEIVE);
 
 //basic js cookie reader
 function getCookie(name) {
-    /*
 		var i,x,y,ARRcookies = document.cookie.split(";")
     for(i=0;i<ARRcookies.length;i++) {
         x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="))
@@ -84,21 +78,14 @@ function getCookie(name) {
         }
     }
     return null
-		*/
-
-		return localStorage.getItem(name);
 }
 
 //basic js cookie setter
 function setCookie(name, value, exdays) {
-		/*
     var exdate = new Date()
     exdate.setDate(exdate.getDate()+exdays)
     value=escape(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
     document.cookie=name+'='+value+'; path=/;'
-		*/
-
-		localStorage.setItem(name, value);
 }
 
 /**************************
@@ -125,4 +112,5 @@ function setProductInfo(productInfo) {
 	console.log(productInfo);
 
 
+}
 }
