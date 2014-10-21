@@ -1,47 +1,69 @@
-//var acceptedDomain = "http://googledrive.com";
-/* window.onload = function() {
-    var win = document.getElementsByTagName('iframe')[0].contentWindow;
-    var obj = {
-       name: "Apple iMac 5k",
-			 subtitle: "Fuck it",
-			 description: "5k man!",
-			 vendor: "Apple"
-    };
-    // save obj in subdomain localStorage
-    //win.postMessage(JSON.stringify({key: 'product', method: "set", data: obj}), "*");
-    // load previously saved data
-    //win.postMessage(JSON.stringify({key: 'product', method: "get"}), "*");
-    window.onmessage = function(e) {
-        //if (e.origin != acceptedDomain) {
-        //    return;
-        //}
-        console.log(JSON.parse(e.data).name);
-    };
-}; */
-
-var iframe = document.getElementById('iframe_payment');
-
-window.addEventListener('message', receiveMessage, false);
+/*
+	Trusted domain(s) for messages from external server.
+*/
+var mTrustedDomain = 'http://iframe.letsgeekaround.com';
 
 
-function receiveMessage(evt) {
+/*
+	Grab server (iframe) reference from HTML.
+*/
+var mServer = document.getElementById('iframe_payment');
+
+/*
+	Product information set by the client.
+*/
+var mProductInfo = {
+	 title: "Apple iMac 5k",
+	 subtitle: "Fuck it",
+	 vendorName: "Apple",
+	 price: "2500"
+};
+
+/*
+	Message key used by the server to let the client know
+	that the server is ready to receive messages.
+*/
+var MESSAGE_KEY_READY_TO_RECEIVE = 'ready';
+
+/*
+	Key used by client to send product info messages to server.
+*/
+var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
+
+/*
+	Add listener for server messages.
+*/
+window.addEventListener('message', function(evt) {
 	console.log("Client: Receiving message...");
 	console.log("Domain: " + evt.origin + ", Data: " + evt.data);
 	
-  //listen to the domain1 messages only
-  if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data !== 'not-loggedin') {
-    //boom my domain1 cookie info is here
-    var mycookie = evt.data;
+  /*
+		Check if domain is trusted.
+	*/
+  if (evt.origin === mTrustedDomain) {
 		
+		/*
+			Check what message has been passed.
+		*/
+		var payload = JSON.parse(evt.data);
+		switch(payload.method) {
+			case 'ready':
+				sendProductInfo(mProductInfo);
+				break;
+		}
   }
+});
 
-  if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data === 'not-loggedin') {
-    //im not logged in so do it now send a message to the iframe
-    iframe.contentWindow.postMessage("log-me-in", '*');
-  }
-	
-	if (evt.origin === 'http://iframe.letsgeekaround.com' && evt.data === 'message') {
-    //im not logged in so do it now send a message to the iframe
-    iframe.contentWindow.postMessage("log-me-in", '*');
-  }
+/*
+	Send product info using "set" method call along with associated key and value (or product info) pair.
+*/
+function sendProductInfo(productInfo) {
+	sendMessageToServer(JSON.stringify({method: "set", key: MESSAGE_KEY_PRODUCT_INFO, value: productInfo}));
+}
+
+/*
+	Send a generic message (string) to the server.
+*/
+function sendMessageToServer(message) {
+	mServer.contentWindow.postMessage(message, '*');
 }

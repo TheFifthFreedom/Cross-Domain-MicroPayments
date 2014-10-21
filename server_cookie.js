@@ -1,78 +1,65 @@
-/* var acceptedDomains = [ "http://thefifthfreedom.github.io", "http://www.columbia.edu" ];
+/*
+	Cookie key that is associated with user id.
+*/
+var COOKIE_KEY_USER_ID = 'IFUID';
 
-$(document).ready(function(){
+/*
+	Message key used by the server to let the client know
+	that the server is ready to receive messages.
+*/
+var MESSAGE_KEY_READY_TO_RECEIVE = 'ready';
 
-	safariRedirectHandler();
-	
+/*
+	Message key used by the client to send product info 
+	messages to server.
+*/
+var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 
+/*
+	Grab user id cookie. If there is none, display warning button.
+	Otherwise, display the success button.
+*/
+if(getCookie(COOKIE_KEY_USER_ID)) {
+	$("#button").removeClass("btn-primary");
+	$("#button").addClass("btn-success");
+} else {
 	$("#button").removeClass("btn-primary");
 	$("#button").addClass("btn-warning");
 	$("#button").click(function() {
-		safariButtonHandler();
+		setCookie(COOKIE_KEY_USER_ID, "Strong Cheese", 9999);
+		if(getCookie(COOKIE_KEY_USER_ID)) {
+			$("#button").removeClass("btn-primary");
+			$("#button").addClass("btn-success");
+		}
 	});
-	
-});
-window.onmessage = function(e) {
-		console.log("origin: " + e.origin);
-		var isDomainAccepted = false;
-		for(var count = 0; count < acceptedDomains.length; count++) {
-			if (e.origin == acceptedDomains[count]) {
-				isDomainAccepted = true;
-			}
-		}
-		if(!isDomainAccepted)
-			return;
-    
-    var payload = JSON.parse(e.data);
-    switch(payload.method) {
-        case 'set':
-            //localStorage.setItem(payload.key, JSON.stringify(payload.data));
-						if (payload.key == "username") {
-							console.log("Username is: " + JSON.stringify(payload.data));
-							$("#button").removeClass("btn-primary");
-							$("#button").addClass("btn-success");
-						}
-            break;
-        case 'get':
-            var parent = window.parent;
-            var data = localStorage.getItem(payload.key);
-            parent.postMessage(data, "*");
-            break;
-        case 'remove':
-            localStorage.removeItem(payload.key);
-            break;
-    }
-};
-function safariButtonHandler() {
-  var userKey = "username";
-	//Took out ""&& (navigator.userAgent.indexOf('Chrome')==-1)""
-	if(isThisSafari()){
-		//var username = localStorage.getItem(userKey);
-		if(top.location != document.location){
-			//if(username == null){
-				href=document.location.href;
-				href=(href.indexOf('?')==-1)?href+'?':href+'&';
-				top.location.href =href+'reref='+encodeURIComponent(document.referrer);
-			//}
-		}
-	}
-}
-function safariRedirectHandler() {
-	var userKey = "username";
-	if(isThisSafari() && top.location == document.location){
-		localStorage.setItem(userKey, "Bob Saget");
-		rerefidx = document.location.href.indexOf('reref=');
-		if(rerefidx != -1) {
-			href=decodeURIComponent(document.location.href.substr(rerefidx+6));
-			window.location.replace(href);
-		}
-	}
 }
 
-function isThisSafari() {
-	return (navigator.userAgent.indexOf('Safari') != -1);
-}
+/*
+	Add listener for client messages.
 */
+window.addEventListener('message', function(evt) {
+	var payload = JSON.parse(evt.data);
+	switch(payload.method) {
+		case 'set':
+			if(payload.key == MESSAGE_KEY_PRODUCT_INFO)
+				setProductInfo(payload.value);
+			break;
+		case 'get':
+			break;
+	}
+});
+
+/*
+	Let client know that we are ready
+	for messages.
+*/
+sendMessageToClient(MESSAGE_KEY_READY_TO_RECEIVE);
+
+
+
+/**************************
+	COOKIE METHODS
+***************************/
 
 //basic js cookie reader
 function getCookie(name) {
@@ -96,28 +83,26 @@ function setCookie(name, value, exdays) {
     document.cookie=name+'='+value+'; path=/;'
 }
 
-//we read the page cookies with javascript (best to avoid tight server caching)
+/**************************
+	MESSAGE METHODS
+***************************/
 
-if(getCookie('logged-in')) {
-  //cookie present do your thing
-  mycookie = getCookie('logged-in');
+/*
+	Send a generic message (string) to the client.
+*/
+function sendMessageToClient(message) {
+	window.parent.postMessage(message, "*");
 }
 
-if(!getCookie('logged-in')) {
-  //cookie NOT present do your thing
-  mycookie = 'not-loggedin';
-}
+/**************************
+	CONTENT RENDERING METHODS
+***************************/
 
-//post cookie info to the parent window on any domain
-window.parent.postMessage(mycookie, '*');
-
-//receive messages from the outside domain
-window.addEventListener('message', receiveMessage, false);
-
-function receiveMessage(evt)
-{
-    var msg = evt.data;
-    if(msg === 'log-me-in') {
-      setCookie('logged-in','true',7);
-    }
+/*
+	Set product info from client to the server's
+	rendered HTML page.
+*/
+function setProductInfo(productInfo) {
+	console.log("product info to be rendered: ");
+	console.log(productInfo);
 }
