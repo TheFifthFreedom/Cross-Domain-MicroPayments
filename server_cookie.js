@@ -10,7 +10,7 @@ var COOKIE_KEY_USER_ID = 'IFUID';
 var MESSAGE_KEY_READY_TO_RECEIVE = 'ready';
 
 /*
-	Message key used by the client to send product info 
+	Message key used by the client to send product info
 	messages to server.
 */
 var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
@@ -38,14 +38,19 @@ if(getCookie(COOKIE_KEY_USER_ID)) {
 	Add listener for client messages.
 */
 window.addEventListener('message', function(evt) {
-	var payload = JSON.parse(evt.data);
-	switch(payload.method) {
-		case 'set':
-			if(payload.key == MESSAGE_KEY_PRODUCT_INFO)
-				setProductInfo(payload.value);
-			break;
-		case 'get':
-			break;
+	if (evt.data === 'ready'){
+		return;
+	}
+	else{
+		var payload = JSON.parse(evt.data);
+		switch(payload.method) {
+			case 'set':
+				if(payload.key == MESSAGE_KEY_PRODUCT_INFO)
+					setProductInfo(payload.value);
+				break;
+			case 'get':
+				break;
+		}
 	}
 });
 

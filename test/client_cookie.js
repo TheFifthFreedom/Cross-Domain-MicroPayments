@@ -36,20 +36,24 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 window.addEventListener('message', function(evt) {
 	console.log("Client: Receiving message...");
 	console.log("Domain: " + evt.origin + ", Data: " + evt.data);
-	
+
   /*
 		Check if domain is trusted.
 	*/
   if (evt.origin === mTrustedDomain) {
-		
 		/*
 			Check what message has been passed.
 		*/
-		var payload = JSON.parse(evt.data);
-		switch(payload.method) {
-			case 'ready':
-				sendProductInfo(mProductInfo);
-				break;
+		if (evt.data === 'ready'){
+			sendProductInfo(mProductInfo);
+		}
+		else{
+			var payload = JSON.parse(evt.data);
+			switch(payload.method) {
+				case 'ready':
+					sendProductInfo(mProductInfo);
+					break;
+			}
 		}
   }
 });
