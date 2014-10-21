@@ -19,22 +19,24 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 	Grab user id cookie. If there is none, display warning button.
 	Otherwise, display the success button.
 */
-if(getCookie(COOKIE_KEY_USER_ID) !== null) {
-	$("#button").removeClass("btn-primary");
-	$("#button").addClass("btn-success");
-} else {
-	$("#button").removeClass("btn-primary");
-	$("#button").addClass("btn-warning");
-	$("#button").click(function() {
-		setCookie(COOKIE_KEY_USER_ID, "Strong Cheese", 9999);
-		if(getCookie(COOKIE_KEY_USER_ID) !== null) {
-			console.log("Clicked! And now changing button color.");
-			//$("#button").removeClass("btn-primary");
-			//$("#button").addClass("btn-success");
-			alert("Sons of bitches");
-		}
-	});
-}
+$(document).ready(){function(){
+	if(getCookie(COOKIE_KEY_USER_ID) !== null) {
+		$("#button").removeClass("btn-primary");
+		$("#button").addClass("btn-success");
+	} else {
+		$("#button").removeClass("btn-primary");
+		$("#button").addClass("btn-warning");
+		$("#button").click(function() {
+			setCookie(COOKIE_KEY_USER_ID, "Strong Cheese", 9999);
+			if(getCookie(COOKIE_KEY_USER_ID) !== null) {
+				console.log("Clicked! And now changing button color.");
+				//$("#button").removeClass("btn-primary");
+				//$("#button").addClass("btn-success");
+				alert("Sons of bitches");
+			}
+		});
+	}
+}}
 
 /*
 	Add listener for client messages.
