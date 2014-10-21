@@ -19,9 +19,7 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 	Grab user id cookie. If there is none, display warning button.
 	Otherwise, display the success button.
 */
-var hello = getCookie(COOKIE_KEY_USER_ID);
-console.log(hello);
-if(hello) {
+if(getCookie(COOKIE_KEY_USER_ID) !== null) {
 	$("#button").removeClass("btn-primary");
 	$("#button").addClass("btn-success");
 } else {
