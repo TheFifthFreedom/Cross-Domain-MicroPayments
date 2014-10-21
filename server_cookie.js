@@ -29,8 +29,9 @@ if(getCookie(COOKIE_KEY_USER_ID) !== null) {
 		setCookie(COOKIE_KEY_USER_ID, "Strong Cheese", 9999);
 		if(getCookie(COOKIE_KEY_USER_ID) !== null) {
 			console.log("Clicked! And now changing button color.");
-			$("#button").removeClass("btn-primary");
-			$("#button").addClass("btn-success");
+			//$("#button").removeClass("btn-primary");
+			//$("#button").addClass("btn-success");
+			alert("Sons of bitches");
 		}
 	});
 }
