@@ -110,7 +110,4 @@ function sendMessageToClient(message) {
 function setProductInfo(productInfo) {
 	console.log("product info to be rendered: ");
 	console.log(productInfo);
-
-
-}
 }
