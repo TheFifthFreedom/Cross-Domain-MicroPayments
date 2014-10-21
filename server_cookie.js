@@ -81,7 +81,7 @@ function getCookie(name) {
     return null
 		*/
 
-		localStorage.getItem(name);
+		return localStorage.getItem(name);
 }
 
 //basic js cookie setter
@@ -118,4 +118,6 @@ function sendMessageToClient(message) {
 function setProductInfo(productInfo) {
 	console.log("product info to be rendered: ");
 	console.log(productInfo);
+
+
 }
