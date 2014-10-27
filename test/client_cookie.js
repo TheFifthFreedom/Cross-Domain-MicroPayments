@@ -3,6 +3,12 @@
 */
 var mTrustedDomain = 'http://iframe.letsgeekaround.com';
 
+
+/*
+	Grab server (iframe) reference from HTML.
+*/
+var mServer = document.getElementById('iframe_payment');
+
 /*
 	Product information set by the client.
 */
@@ -14,6 +20,12 @@ var mProductInfo = {
 };
 
 /*
+	Message key used by the server to let the client know
+	that the server is ready to receive messages.
+*/
+var MESSAGE_KEY_READY_TO_RECEIVE = 'ready';
+
+/*
 	Key used by client to send product info messages to server.
 */
 var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
@@ -22,7 +34,7 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 	Add listener for server messages.
 */
 var socket = new easyXDM.Socket({
-    remote: "http://iframe.letsgeekaround.com", // the path to the provider
+    remote: mTrustedDomain, // the path to the provider
 		onReady:function(message, origin) {
 			if (origin === mTrustedDomain) {
 				sendProductInfo(mProductInfo);
@@ -36,6 +48,17 @@ var socket = new easyXDM.Socket({
 				/*
 					Check what message has been passed.
 				*/
+				// if (message === 'ready'){
+				// 	sendProductInfo(mProductInfo);
+				// }
+				// else {
+				// 	var payload = JSON.parse(evt.data);
+				// 	switch(payload.method) {
+				// 		case 'ready':
+				// 			sendProductInfo(mProductInfo);
+				// 			break;
+				// 	}
+				// }
 				console.log("Client - msg received: " + message)
 			}
 		},
