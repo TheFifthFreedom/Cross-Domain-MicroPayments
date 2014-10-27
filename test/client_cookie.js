@@ -33,41 +33,42 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 /*
 	Add listener for server messages.
 */
-window.addEventListener('message', function(evt) {
-	console.log("Client: Receiving message...");
-	console.log("Domain: " + evt.origin + ", Data: " + evt.data);
-
-  /*
-		Check if domain is trusted.
-	*/
-  if (evt.origin === mTrustedDomain) {
-		/*
-			Check what message has been passed.
-		*/
-		if (evt.data === 'ready'){
-			sendProductInfo(mProductInfo);
-		}
-		else{
-			var payload = JSON.parse(evt.data);
-			switch(payload.method) {
-				case 'ready':
-					sendProductInfo(mProductInfo);
-					break;
+var socket = new easyXDM.Socket({
+    remote: mTrustedDomain, // the path to the provider
+		onReady:function(message, origin) {
+			if (origin === mTrustedDomain) {
+				sendProductInfo(mProductInfo);
 			}
-		}
-  }
+		},
+		onMessage:function(message, origin) {
+			/*
+				Check if domain is trusted.
+			*/
+			if (origin === mTrustedDomain) {
+				/*
+					Check what message has been passed.
+				*/
+				// if (message === 'ready'){
+				// 	sendProductInfo(mProductInfo);
+				// }
+				// else {
+				// 	var payload = JSON.parse(evt.data);
+				// 	switch(payload.method) {
+				// 		case 'ready':
+				// 			sendProductInfo(mProductInfo);
+				// 			break;
+				// 	}
+				// }
+				console.log("Client - msg received: " + message)
+			}
+		},
+		container:"iframe_payment",
+		props: {width:"550", height:"180", frameborder:"0", vspace:"0", hspace:"0"}
 });
 
 /*
 	Send product info using "set" method call along with associated key and value (or product info) pair.
 */
 function sendProductInfo(productInfo) {
-	sendMessageToServer(JSON.stringify({method: "set", key: MESSAGE_KEY_PRODUCT_INFO, value: productInfo}));
-}
-
-/*
-	Send a generic message (string) to the server.
-*/
-function sendMessageToServer(message) {
-	mServer.contentWindow.postMessage(message, '*');
+	socket.postMessage(JSON.stringify({method: "set", key: MESSAGE_KEY_PRODUCT_INFO, value: productInfo}));
 }
