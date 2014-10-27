@@ -16,7 +16,7 @@ var socket = new easyXDM.Socket({
   onMessage:function(message, origin) {
     console.log("getting message from origin: " + origin);
     //do something with message
-		var payload = JSON.parse(message.data);
+		var payload = JSON.parse(message);
 		switch(payload.method) {
 			case 'set':
 				if (payload.key === MESSAGE_KEY_PRODUCT_INFO)
