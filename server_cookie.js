@@ -1,13 +1,7 @@
 /*
-	Cookie key that is associated with user id.
+	Stored data key that is associated with user id.
 */
-var COOKIE_KEY_USER_ID = 'IFUID';
-
-/*
-	Message key used by the server to let the client know
-	that the server is ready to receive messages.
-*/
-var MESSAGE_KEY_READY_TO_RECEIVE = 'ready';
+var STORED_DATA_KEY_USER_ID = 'IFUID';
 
 /*
 	Message key used by the client to send product info
@@ -15,7 +9,9 @@ var MESSAGE_KEY_READY_TO_RECEIVE = 'ready';
 */
 var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 
-
+/*
+  Add listener for client messages.
+*/
 var socket = new easyXDM.Socket({
   onMessage:function(message, origin) {
     //do something with message
@@ -32,69 +28,57 @@ var socket = new easyXDM.Socket({
 });
 
 /*
-	Add listener for client messages.
-
-window.addEventListener('message', function(evt) {
-	if (evt.data === 'ready'){
-		return;
-	}
-	else{
-		var payload = JSON.parse(evt.data);
-		switch(payload.method) {
-			case 'set':
-				if(payload.key == MESSAGE_KEY_PRODUCT_INFO)
-					setProductInfo(payload.value);
-				break;
-			case 'get':
-				break;
-		}
-	}
-});
-*/
-
-/*
-	Grab user id cookie. If there is none, display warning button.
+	Grab user id info. If there is none, display warning button.
 	Otherwise, display the success button.
 */
-if(getCookie(COOKIE_KEY_USER_ID) !== null) {
+if(getStoredData(STORED_DATA_KEY_USER_ID) !== null) {
 	$("#button").removeClass("btn-primary");
 	$("#button").addClass("btn-success");
 } else {
 	$("#button").removeClass("btn-primary");
 	$("#button").addClass("btn-warning");
 	$("#button").click(function() {
-		setCookie(COOKIE_KEY_USER_ID, "StrongCheese", 9999);
-		if(getCookie(COOKIE_KEY_USER_ID) !== null) {
-			$("#button").removeClass("btn-primary");
-			$("#button").addClass("btn-success");
-		}
+		setStoredData(STORED_DATA_KEY_USER_ID, "StrongCheese");
 	});
 }
 
-/*
-	Let client know that we are ready
-	for messages.
-*/
-//sendMessageToClient(MESSAGE_KEY_READY_TO_RECEIVE);
-
-
-
 /**************************
-	COOKIE METHODS
+	STORED DATA METHODS
 ***************************/
 
+function getStoredData(key) {
+  if (isLocalStorageSupported()) {
+    return getLocalStorageData(key);
+  } else {
+    return getCookie(key);
+  }
+}
+
 //basic js cookie reader
-function getCookie(name) {
+function getCookie(key) {
 		var i,x,y,ARRcookies = document.cookie.split(";")
     for(i=0;i<ARRcookies.length;i++) {
         x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="))
         y = ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1)
         x = x.replace(/^\s+|\s+$/g,"")
-        if (x==name) {
+        if (x==key) {
             return unescape(y)
         }
     }
     return null
+}
+
+//basic local storage reader
+function getLocalStorageData(key) {
+  return localStorage.getItem(key);
+}
+
+function setStoredData(key, value) {
+  if (isLocalStorageSupported()) {
+    setLocalStorageData(key, value);
+  } else {
+    setCookie(key, value, 2147483647);
+  }
 }
 
 //basic js cookie setter
@@ -103,6 +87,11 @@ function setCookie(name, value, exdays) {
     exdate.setDate(exdate.getDate()+exdays)
     value=escape(value)+((exdays==null)?'':'; expires='+exdate.toUTCString())
     document.cookie=name+'='+value+'; path=/;'
+}
+
+//basic local storage setter
+function setLocalStorageData(key, value) {
+  localStorage.setItem(key, value);
 }
 
 /**************************
@@ -127,4 +116,21 @@ function sendMessageToClient(message) {
 function setProductInfo(productInfo) {
 	console.log("product info to be rendered: ");
 	console.log(productInfo);
+}
+
+/*********************************
+  LOCAL STORAGE SUPPORT METHODS
+**********************************/
+
+function isLocalStorageSupported() {
+  var test = 'test';
+  try {
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    console.log("Local Storage is supported!!! YEAHHHH!!!")
+    return true;
+  } catch (e) {
+    console.log("Local Storage is not supported. UGHHHHHHH damn.")
+    return false;
+  }
 }
