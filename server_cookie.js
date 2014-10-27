@@ -42,7 +42,7 @@ $(document).ready(function() {
 ***************************/
 
 function getStoredData(key) {
-  if (isLocalStorageSupported()) {
+  if (!isThisSafari()) {
     return getLocalStorageData(key);
   } else {
     return getCookie(key);
@@ -69,7 +69,7 @@ function getLocalStorageData(key) {
 }
 
 function setStoredData(key, value) {
-  if (isLocalStorageSupported()) {
+  if (!isThisSafari()) {
     setLocalStorageData(key, value);
   } else {
     setCookie(key, value, 2147483647);
