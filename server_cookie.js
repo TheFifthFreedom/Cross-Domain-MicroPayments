@@ -134,10 +134,11 @@ function setProductInfo(productInfo) {
 	console.log("product info to be rendered: ");
 	console.log(productInfo);
 
-  $("#product").text(productInfo["title"]);
-  // $("#product em").text(productInfo["subtitle"]);
-  // $("#product::lastLine").text(productInfo["vendorName"]);
-  // $("#button").text("$" + productInfo["price"]);
+  $("#product").text("<strong>" + productInfo["title"] + "</strong><br>"
+    + "<em>" + productInfo["subtitle"] + "</em><br>"
+    + productInfo["vendorName"]);
+
+  //$("#button").text("$" + productInfo["price"]);
 }
 
 /*********************************
