@@ -23,10 +23,8 @@ var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 */
 var socket = new easyXDM.Socket({
     remote: "http://iframe.letsgeekaround.com", // the path to the provider
-		onReady:function(message, origin) {
-			if (origin === mTrustedDomain) {
-				sendProductInfo(mProductInfo);
-			}
+		onReady:function(message) {
+			sendProductInfo(mProductInfo);
 		},
 		onMessage:function(message, origin) {
 			/*
