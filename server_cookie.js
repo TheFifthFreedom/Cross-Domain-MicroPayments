@@ -134,7 +134,7 @@ function setProductInfo(productInfo) {
 	console.log("product info to be rendered: ");
 	console.log(productInfo);
 
-  $("#product").text("<strong>" + productInfo["title"] + "</strong><br>"
+  $("#product").html("<strong>" + productInfo["title"] + "</strong><br>"
     + "<em>" + productInfo["subtitle"] + "</em><br>"
     + productInfo["vendorName"]);
 
