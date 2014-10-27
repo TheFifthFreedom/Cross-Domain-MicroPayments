@@ -28,19 +28,14 @@ var socket = new easyXDM.Socket({
 });
 
 /*
-	Grab user id info. If there is none, display warning button.
-	Otherwise, display the success button.
+  Functions that should be run when document is finished loading.
 */
-if(getStoredData(STORED_DATA_KEY_USER_ID) !== null) {
-	$("#button").removeClass("btn-primary");
-	$("#button").addClass("btn-success");
-} else {
-	$("#button").removeClass("btn-primary");
-	$("#button").addClass("btn-warning");
-	$("#button").click(function() {
-		setStoredData(STORED_DATA_KEY_USER_ID, "StrongCheese");
-	});
-}
+$(document).ready(function() {
+  safariRedirectHandler();
+  setButtonColor();
+});
+
+
 
 /**************************
 	STORED DATA METHODS
@@ -110,6 +105,27 @@ function sendMessageToClient(message) {
 ***************************/
 
 /*
+  Set button color based on existing storage data.
+*/
+function setButtonColor() {
+  /*
+    Grab user id info. If there is none, display warning button.
+    Otherwise, display the success button.
+  */
+  if(getStoredData(STORED_DATA_KEY_USER_ID) !== null) {
+    $("#button").removeClass("btn-primary");
+    $("#button").addClass("btn-success");
+  } else {
+    $("#button").removeClass("btn-primary");
+    $("#button").addClass("btn-warning");
+    $("#button").click(function() {
+      safariButtonHandler();
+    });
+  }
+}
+
+
+/*
 	Set product info from client to the server's
 	rendered HTML page.
 */
@@ -121,16 +137,33 @@ function setProductInfo(productInfo) {
 /*********************************
   LOCAL STORAGE SUPPORT METHODS
 **********************************/
-
-function isLocalStorageSupported() {
-  var test = 'test';
-  try {
-    localStorage.setItem(test, test);
-    localStorage.removeItem(test);
-    console.log("Local Storage is supported!!! YEAHHHH!!!")
-    return true;
-  } catch (e) {
-    console.log("Local Storage is not supported. UGHHHHHHH damn.")
-    return false;
+function safariRedirectHandler() {
+  if(isThisSafari() && top.location == document.location){
+    setStoredData(STORED_DATA_KEY_USER_ID, "StrongCheese");
+    rerefidx = document.location.href.indexOf('reref=');
+    if(rerefidx != -1) {
+      href=decodeURIComponent(document.location.href.substr(rerefidx+6));
+      window.location.replace(href);
+    }
   }
+}
+
+function safariButtonHandler() {
+  var userKey = "username";
+	if(isThisSafari()){
+		//var username = localStorage.getItem(userKey);
+		if(top.location != document.location){
+			//if(username == null){
+				href=document.location.href;
+				href=(href.indexOf('?')==-1)?href+'?':href+'&';
+				top.location.href =href+'reref='+encodeURIComponent(document.referrer);
+			//}
+		}
+	} else {
+    setStoredData(STORED_DATA_KEY_USER_ID, "StrongCheese");
+  }
+}
+
+function isThisSafari() {
+	return ((navigator.userAgent.indexOf('Safari') != -1) && (navigator.userAgent.indexOf('Chrome') == -1));
 }
