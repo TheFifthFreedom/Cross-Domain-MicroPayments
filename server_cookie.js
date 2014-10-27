@@ -48,9 +48,9 @@ if(getStoredData(STORED_DATA_KEY_USER_ID) !== null) {
 
 function getStoredData(key) {
   if (isLocalStorageSupported()) {
-    getLocalStorageData(key);
+    return getLocalStorageData(key);
   } else {
-    getCookie(key);
+    return getCookie(key);
   }
 }
 
@@ -70,7 +70,7 @@ function getCookie(key) {
 
 //basic local storage reader
 function getLocalStorageData(key) {
-  localStorage.getItem(key);
+  return localStorage.getItem(key);
 }
 
 function setStoredData(key, value) {
