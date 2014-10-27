@@ -138,7 +138,7 @@ function setProductInfo(productInfo) {
     + "<em>" + productInfo["subtitle"] + "</em><br>"
     + productInfo["vendorName"]);
 
-  //$("#button").text("$" + productInfo["price"]);
+  $("#button").html("$" + productInfo["price"]);
 }
 
 /*********************************

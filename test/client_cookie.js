@@ -6,12 +6,14 @@ var mTrustedDomain = 'http://iframe.letsgeekaround.com';
 /*
 	Product information set by the client.
 */
-var mProductInfo = {
-	 title: "Apple iMac 5k",
-	 subtitle: "Fuck it",
-	 vendorName: "Apple",
-	 price: "2500"
-};
+if (!mProductInfo) {
+	mProductInfo = {
+		title: "DEFAULT",
+		subtitle: "DEFAULT",
+		vendorName: "DEFAULT",
+		price: "--"
+	};
+}
 
 /*
 	Key used by client to send product info messages to server.
