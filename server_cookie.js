@@ -15,6 +15,43 @@ var MESSAGE_KEY_READY_TO_RECEIVE = 'ready';
 */
 var MESSAGE_KEY_PRODUCT_INFO = 'IFPI';
 
+
+var socket = new easyXDM.Socket({
+  onMessage:function(message, origin) {
+    //do something with message
+		var payload = JSON.parse(message.data);
+		switch(payload.method) {
+			case 'set':
+				if (payload.key = MESSAGE_KEY_PRODUCT_INFO)
+					setProductInfo(payload.value);
+				break;
+			case 'get':
+				break;
+		}
+  }
+});
+
+/*
+	Add listener for client messages.
+
+window.addEventListener('message', function(evt) {
+	if (evt.data === 'ready'){
+		return;
+	}
+	else{
+		var payload = JSON.parse(evt.data);
+		switch(payload.method) {
+			case 'set':
+				if(payload.key == MESSAGE_KEY_PRODUCT_INFO)
+					setProductInfo(payload.value);
+				break;
+			case 'get':
+				break;
+		}
+	}
+});
+*/
+
 /*
 	Grab user id cookie. If there is none, display warning button.
 	Otherwise, display the success button.
@@ -35,30 +72,10 @@ if(getCookie(COOKIE_KEY_USER_ID) !== null) {
 }
 
 /*
-	Add listener for client messages.
-*/
-window.addEventListener('message', function(evt) {
-	if (evt.data === 'ready'){
-		return;
-	}
-	else{
-		var payload = JSON.parse(evt.data);
-		switch(payload.method) {
-			case 'set':
-				if(payload.key == MESSAGE_KEY_PRODUCT_INFO)
-					setProductInfo(payload.value);
-				break;
-			case 'get':
-				break;
-		}
-	}
-});
-
-/*
 	Let client know that we are ready
 	for messages.
 */
-sendMessageToClient(MESSAGE_KEY_READY_TO_RECEIVE);
+//sendMessageToClient(MESSAGE_KEY_READY_TO_RECEIVE);
 
 
 
@@ -96,7 +113,7 @@ function setCookie(name, value, exdays) {
 	Send a generic message (string) to the client.
 */
 function sendMessageToClient(message) {
-	window.parent.postMessage(message, "*");
+	socket.postMessage(message, "*");
 }
 
 /**************************
