@@ -18,7 +18,7 @@ var socket = new easyXDM.Socket({
 		var payload = JSON.parse(message.data);
 		switch(payload.method) {
 			case 'set':
-				if (payload.key = MESSAGE_KEY_PRODUCT_INFO)
+				if (payload.key === MESSAGE_KEY_PRODUCT_INFO)
 					setProductInfo(payload.value);
 				break;
 			case 'get':
@@ -132,6 +132,8 @@ function setButtonColor() {
 function setProductInfo(productInfo) {
 	console.log("product info to be rendered: ");
 	console.log(productInfo);
+
+
 }
 
 /*********************************
