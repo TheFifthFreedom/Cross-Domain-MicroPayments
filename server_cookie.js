@@ -38,20 +38,20 @@ if(getStoredData(STORED_DATA_KEY_USER_ID) !== null) {
 	$("#button").removeClass("btn-primary");
 	$("#button").addClass("btn-warning");
 	$("#button").click(function() {
-		setStoredData(STORED_DATA_KEY_USER_ID, "StrongCheese", 9999);
+		setStoredData(STORED_DATA_KEY_USER_ID, "StrongCheese");
 	});
 }
-
-$(document).ready(function() {
-  getBrowserName();
-});
 
 /**************************
 	STORED DATA METHODS
 ***************************/
 
 function getStoredData(key) {
-
+  if (isLocalStorageSupported()) {
+    getLocalStorageData(key);
+  } else {
+    getCookie(key);
+  }
 }
 
 //basic js cookie reader
@@ -73,8 +73,12 @@ function getLocalStorageData(key) {
   localStorage.getItem(key);
 }
 
-function setStoredData(key, value, exdays) {
-
+function setStoredData(key, value) {
+  if (isLocalStorageSupported()) {
+    setLocalStorageData(key, value);
+  } else {
+    setCookie(key, value, 2147483647);
+  }
 }
 
 //basic js cookie setter
@@ -114,59 +118,19 @@ function setProductInfo(productInfo) {
 	console.log(productInfo);
 }
 
-/**************************
-  USER AGENT METHODS
-***************************/
+/*********************************
+  LOCAL STORAGE SUPPORT METHODS
+**********************************/
 
-function getBrowserName() {
-  var ua = navigator.userAgent;
-  var msie = false;
-  var ff = false;
-  var chrome = false;
-
-  //Javascript Browser Detection - Internet Explorer
-  if (/MSIE (\d+\.\d+);/.test(ua)) //test for MSIE x.x; True or False
-  {
-      var msie = (/MSIE (\d+\.\d+);/.test(ua)); //True or False
-      var ieversion = new Number(RegExp.$1); //gets browser version
-      alert("ie: " + msie + ' version:' + ieversion);
-  }
-
-  //Javascript Browser Detection - FireFox
-  if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.ua))//test for Firefox/x.x or Firefox x.x
-  {
-      var ff = (/Firefox[\/\s](\d+\.\d+)/.test(navigator.ua)); //True or False
-      var ffversion = new Number(RegExp.$1) //gets browser version
-      alert("FF: " + ff + ' version:' + ieversion);
-  }
-
-  //Javascript Browser Detection - Chrome
-  if (ua.lastIndexOf('Chrome/') > 0) {
-      var version = ua.substr(ua.lastIndexOf('Chrome/') + 7, 2);
-      alert("chrome " + version);
-  }
-
-  //Javascript Browser Detection - Safari
-  if (ua.lastIndexOf('Safari/') > 0) {
-      var version = ua.substr(ua.lastIndexOf('Safari/') + 7, 2);
-      alert("Safari " + version);
-  }
-
-  //Javascript Browser Detection - Android
-  if (ua.indexOf("Android") >= 0) {
-      var androidversion = parseFloat(ua.slice(ua.indexOf("Android") + 8));
-      if (androidversion < 2.3) {
-          // do whatever
-          alert("This older version of Android has some issues with CSS");
-      }
-  }
-
-  //Javascript Browser Detection - Mobile
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(ua)) {
-
-      // Check if the orientation has changed 90 degrees or -90 degrees... or 0
-      window.addEventListener("orientationchange", function () {
-          alert(window.orientation);
-      });
+function isLocalStorageSupported() {
+  var test = 'test';
+  try {
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    console.log("Local Storage is supported!!! YEAHHHH!!!")
+    return true;
+  } catch (e) {
+    console.log("Local Storage is not supported. UGHHHHHHH damn.")
+    return false;
   }
 }
